@@ -1,3 +1,34 @@
+# ===============================
+# From Type_SpinOrbital.jl
+# ===============================
+struct SpinOrbital
+    l::Int
+    ml::Int
+    s::Float64
+    ms::Float64
+end
+
+# ===============================
+# From Type_SlaterDet.jl
+# ===============================
+struct SlaterDet
+    det::Vector{SpinOrbital}
+    ml::Int
+    ms::Float64
+    function SlaterDet(det::Vector{SpinOrbital})
+        ml = 0
+        ms = 0.0
+        for i in det
+            ml += i.ml
+            ms += i.ms
+        end
+        new(det, ml, ms)
+    end
+end
+
+# ===============================
+# From Type_CSF.jl
+# ===============================
 struct CSF
     CoeffSlaterDet::Vector{Float64}
     l::Int
@@ -24,16 +55,16 @@ end
 # проверить бы еще насколько эти CSF чистые по спину и L
 function DetermineTerm(E::Vector{Float64}, ψ::Matrix{Float64}, Alldet::Vector{SlaterDet})
     UniqueE = unique(E);
-    Terms = Array{Term}(undef, 1, size(UniqueE,1))
+    Terms = Vector{Term}(undef, length(UniqueE))
     for i in eachindex(UniqueE)
         indexE = findall(x -> x == UniqueE[i], E);
         degenN = (indexE[end] - indexE[1] + 1);
-        CSFvec = Array{CSF}(undef, 1, degenN);
-        ml = zeros(1, degenN);
-        ms = zeros(1, degenN);
+        CSFvec = Vector{CSF}(undef, degenN);
+        ml = zeros(Int, degenN);
+        ms = zeros(Float64, degenN);
 
         for j in eachindex(indexE)
-            NdetMax = findfirst(x -> x == maximum(abs.(ψ[:, indexE[j]])), abs.(ψ[:, indexE[j]])); # вот тут бы чекнуть по всем детерминантам какие ml и ms
+            NdetMax = findfirst(x -> x == maximum(abs.(ψ[:, indexE[j]])), abs.(ψ[:, indexE[j]]));
             ml[j] = Alldet[NdetMax].ml
             ms[j] = Alldet[NdetMax].ms
         end
@@ -45,24 +76,24 @@ function DetermineTerm(E::Vector{Float64}, ψ::Matrix{Float64}, Alldet::Vector{S
             CSFvec[j] = CSF(ψ[:, indexE[j]], L, S, ml[j], ms[j])
         end
 
-        Terms[i] = Term(vec(CSFvec), L, S);
+        Terms[i] = Term(CSFvec, L, S);
     end
-    return(Terms)
+    return Terms
 end
 
 function Ms(ψ::Vector{SlaterDet}, coeff::Vector{ComplexF64})
     ms = 0.0;
     for i in eachindex(coeff) 
-        println(i, "      ", real(coeff[i]*coeff[i]'*ψ[i].ms))
-        ms += coeff[i]*coeff[i]'*ψ[i].ms
+        ms += abs2(coeff[i])*ψ[i].ms
     end
-    return(ms)
+    return ms
 end
 
 function Ml(ψ::Vector{SlaterDet}, coeff::Vector{ComplexF64})
     ml = 0.0;
     for i in eachindex(coeff) 
-        ml += coeff[i]*coeff[i]'*ψ[i].ml
+        ml += abs2(coeff[i])*ψ[i].ml
     end
-    return(ml)
+    return ml
 end
+

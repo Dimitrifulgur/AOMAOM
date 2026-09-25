@@ -1,4 +1,14 @@
-include("./Included_Libs.jl")
+using LinearAlgebra
+using Combinatorics
+using BenchmarkTools
+using WignerSymbols
+using PlotlyJS
+using SparseArrays
+using StaticArrays
+
+include("Types.jl")
+include("MathUtils.jl")
+include("Integrals.jl")
 
 function get_trigonal_prism(phi=0.0)
     ligands = [ 54.0  90.0+phi;
@@ -66,11 +76,15 @@ function main()
     
     Alldet = ConfigGen(nel, L)
     
-    H = Matrix{ComplexF64}(undef, size(Alldet,1), size(Alldet,1))
+    H = zeros(ComplexF64, size(Alldet,1), size(Alldet,1))
     H_Coulomb(Alldet, H, F0, F2, F4)
     Energ, EiVec = eigen(H)
     Energ = round.(Energ, digits = 20)
     EiVec = round.(EiVec, digits = 20)
+    
+    println("Кулоновские энергии (до внешних полей):")
+    Energ_C = real.(Energ) .- minimum(real.(Energ))
+    display(round.(Energ_C, digits=2))
     
     H = EiVec' * H * EiVec
     
