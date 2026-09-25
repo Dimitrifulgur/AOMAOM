@@ -121,14 +121,15 @@ end
 
 function H_Coulomb(SlaterDeterminants::Vector{SlaterDet}, H::Matrix{ComplexF64}, F0::Float64, F2::Float64, F4::Float64)
     Alldet = [SlaterDeterminants[i].det for i in eachindex(SlaterDeterminants)]
-    for i in axes(Alldet,1)[begin:end]
+    @inbounds for i in axes(Alldet,1)[begin:end]
         for j in axes(Alldet,1)[i:end]
             # опасный момент
             if i == j
                 H[i,j] = CoulombIntegralDet(Alldet[i], Alldet[j], F0, F2, F4);
             else
-                H[i,j] = CoulombIntegralDet(Alldet[i], Alldet[j], F0, F2, F4);
-                H[j,i] = H[i,j]
+                val = CoulombIntegralDet(Alldet[i], Alldet[j], F0, F2, F4);
+                H[i,j] = val;
+                H[j,i] = val'
             end
         end
     end

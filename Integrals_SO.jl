@@ -25,10 +25,10 @@ function H_SO(Alldet::Vector{SlaterDet}, coeff::Matrix{ComplexF64}, H::Matrix{Co
     # ψ_i = coeff[:,i]
     # Можно брать не все коэффициенты!!!!
     # заранее найти только значимые и юзать их -> не буду считать 0 
-    for i in axes(H,1)[begin:end]
-        for j in axes(H,1)[begin:end]
-            coeff1 = coeff[:,i];
-            coeff2 = coeff[:,j];
+    @inbounds for i in axes(H,1)
+        @views coeff1 = coeff[:,i]
+        for j in axes(H,1)
+            @views coeff2 = coeff[:,j]
             Energ = CSF_SO(Alldet, coeff1, coeff2, λ);
             H[i,j] +=  Energ ;
         end

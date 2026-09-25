@@ -1,9 +1,6 @@
-mutable struct SpinOrbital
-    l::Number
-    ml::Number
-    s::Number
-    ms::Number
-    function SpinOrbital(l, ml, s, ms)
-            new(l, ml, s, ms)
-    end
+struct SpinOrbital
+    l::Int
+    ml::Int
+    s::Float64
+    ms::Float64
 end

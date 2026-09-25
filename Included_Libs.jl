@@ -5,7 +5,7 @@ using WignerSymbols
 using PlotlyJS
 import Base
 using SparseArrays
-
+using StaticArrays
 include("./Type_SpinOrbital.jl")
 include("./Type_SlaterDet.jl")
 include("./Type_CSF.jl")

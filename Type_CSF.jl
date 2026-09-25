@@ -1,21 +1,15 @@
-mutable struct CSF
+struct CSF
     CoeffSlaterDet::Vector{Float64}
-    l::Number
-    s::Number
-    ml::Number
-    ms::Number
-    function CSF(CoeffSlaterDet::Vector{Float64}, l::Number, s::Number, ml::Number, ms::Number)
-        new(CoeffSlaterDet, l, s, ml, ms)
-    end
+    l::Int
+    s::Float64
+    ml::Int
+    ms::Float64
 end
 
-mutable struct Term
+struct Term
     VecCSF::Vector{CSF}
-    l::Number
-    s::Number
-    function Term(VecCFS::Vector{CSF}, l::Number, s::Number)
-        new(VecCFS, l, s)
-    end
+    l::Int
+    s::Float64
 end
 
 function Base.show(io::IO, t::Term)

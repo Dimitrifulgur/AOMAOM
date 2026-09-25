@@ -1,12 +1,13 @@
-mutable struct SlaterDet
+struct SlaterDet
     det::Vector{SpinOrbital}
-    ml::Number
-    ms::Number
+    ml::Int
+    ms::Float64
     function SlaterDet(det::Vector{SpinOrbital})
-        ml, ms = 0, 0;
+        ml = 0
+        ms = 0.0
         for i in det
-            ml += i.ml;
-            ms += i.ms;
+            ml += i.ml
+            ms += i.ms
         end
         new(det, ml, ms)
     end

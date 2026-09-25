@@ -37,11 +37,11 @@ function SigmaAOM(θ::Float64, φ::Float64)
     V44 = Fσxy(θ, φ)*Fσxy(θ, φ); V45 = Fσxy(θ, φ)*Fσx2y2(θ, φ);
     V55 = Fσx2y2(θ, φ)*Fσx2y2(θ, φ);
 
-    Vσ_matrix = [V11 V12 V13 V14 V15; 
-                 V12 V22 V23 V24 V25; 
-                 V13 V23 V33 V34 V35;
-                 V14 V24 V34 V44 V45;
-                 V15 V25 V35 V45 V55];
+    Vσ_matrix = @SMatrix [V11 V12 V13 V14 V15; 
+                          V12 V22 V23 V24 V25; 
+                          V13 V23 V33 V34 V35;
+                          V14 V24 V34 V44 V45;
+                          V15 V25 V35 V45 V55];
 
     return(Vσ_matrix)
 end
@@ -53,11 +53,11 @@ function PiSineAOM(θ::Float64, φ::Float64, ψ::Float64)
     V22 = Fπsyz(θ, φ, ψ)*Fπsyz(θ, φ, ψ); V23 = Fπsyz(θ, φ, ψ)*Fπsxz(θ, φ, ψ); V24 = Fπsyz(θ, φ, ψ)*Fπsxy(θ, φ, ψ);   V25 = Fπsyz(θ, φ, ψ)*Fπsx2y2(θ, φ, ψ); V55 = Fπsx2y2(θ, φ, ψ)*Fπsx2y2(θ, φ, ψ);
     V33 = Fπsxz(θ, φ, ψ)*Fπsxz(θ, φ, ψ); V34 = Fπsxz(θ, φ, ψ)*Fπsxy(θ, φ, ψ); V35 = Fπsxz(θ, φ, ψ)*Fπsx2y2(θ, φ, ψ); V44 = Fπsxy(θ, φ, ψ)*Fπsxy(θ, φ, ψ);   V45 = Fπsxy(θ, φ, ψ)*Fπsx2y2(θ, φ, ψ);
 
-    Vπs_matrix = [V11 V12 V13 V14 V15; 
-                 V12 V22 V23 V24 V25; 
-                 V13 V23 V33 V34 V35;
-                 V14 V24 V34 V44 V45;
-                 V15 V25 V35 V45 V55];
+    Vπs_matrix = @SMatrix [V11 V12 V13 V14 V15; 
+                           V12 V22 V23 V24 V25; 
+                           V13 V23 V33 V34 V35;
+                           V14 V24 V34 V44 V45;
+                           V15 V25 V35 V45 V55];
 
     return(Vπs_matrix)
 end
@@ -69,11 +69,11 @@ function PiCosineAOM(θ::Float64, φ::Float64, ψ::Float64)
     V22 = Fπcyz(θ, φ, ψ)*Fπcyz(θ, φ, ψ); V23 = Fπcyz(θ, φ, ψ)*Fπcxz(θ, φ, ψ); V24 = Fπcyz(θ, φ, ψ)*Fπcxy(θ, φ, ψ);   V25 = Fπcyz(θ, φ, ψ)*Fπcx2y2(θ, φ, ψ); V55 = Fπcx2y2(θ, φ, ψ)*Fπcx2y2(θ, φ, ψ);
     V33 = Fπcxz(θ, φ, ψ)*Fπcxz(θ, φ, ψ); V34 = Fπcxz(θ, φ, ψ)*Fπcxy(θ, φ, ψ); V35 = Fπcxz(θ, φ, ψ)*Fπcx2y2(θ, φ, ψ); V44 = Fπcxy(θ, φ, ψ)*Fπcxy(θ, φ, ψ);   V45 = Fπcxy(θ, φ, ψ)*Fπcx2y2(θ, φ, ψ);
 
-    Vπs_matrix = [V11 V12 V13 V14 V15; 
-                 V12 V22 V23 V24 V25; 
-                 V13 V23 V33 V34 V35;
-                 V14 V24 V34 V44 V45;
-                 V15 V25 V35 V45 V55];
+    Vπs_matrix = @SMatrix [V11 V12 V13 V14 V15; 
+                           V12 V22 V23 V24 V25; 
+                           V13 V23 V33 V34 V35;
+                           V14 V24 V34 V44 V45;
+                           V15 V25 V35 V45 V55];
 
     return(Vπs_matrix)
 end
@@ -84,27 +84,27 @@ function PiCosineSigmaAOM(θ::Float64, φ::Float64, ψ::Float64)
     V22 = Fσπcyz(θ, φ, ψ)*Fσπcyz(θ, φ, ψ); V23 = Fσπcyz(θ, φ, ψ)*Fσπcxz(θ, φ, ψ); V24 = Fσπcyz(θ, φ, ψ)*Fσπcxy(θ, φ, ψ);   V25 = Fσπcyz(θ, φ, ψ)*Fσπcx2y2(θ, φ, ψ); V55 = Fσπcx2y2(θ, φ, ψ)*Fσπcx2y2(θ, φ, ψ);
     V33 = Fσπcxz(θ, φ, ψ)*Fσπcxz(θ, φ, ψ); V34 = Fσπcxz(θ, φ, ψ)*Fσπcxy(θ, φ, ψ); V35 = Fσπcxz(θ, φ, ψ)*Fσπcx2y2(θ, φ, ψ); V44 = Fσπcxy(θ, φ, ψ)*Fσπcxy(θ, φ, ψ);   V45 = Fσπcxy(θ, φ, ψ)*Fσπcx2y2(θ, φ, ψ);
 
-    Vπσs_matrix = [V11 V12 V13 V14 V15; 
-                 V12 V22 V23 V24 V25; 
-                 V13 V23 V33 V34 V35;
-                 V14 V24 V34 V44 V45;
-                 V15 V25 V35 V45 V55];
+    Vπσs_matrix = @SMatrix [V11 V12 V13 V14 V15; 
+                            V12 V22 V23 V24 V25; 
+                            V13 V23 V33 V34 V35;
+                            V14 V24 V34 V44 V45;
+                            V15 V25 V35 V45 V55];
 
     return(Vπσs_matrix)
 end
 
 
-mutable struct AOM_system
-    ligands::Matrix{Float64}     # [θ1, φ1, ψ1; θ2, φ2, ψ2; θ3, φ3, ψ3; ..... ]
+struct AOM_system
+    ligands::Matrix{Float64}
     eσ::Vector{Float64}
-    V_AOM::Matrix{Float64}
+    V_AOM::AbstractMatrix{Float64}
     function AOM_system(ligands::Matrix{Float64}, sigma::Vector{Float64})
-        V_AOM = zeros(Float64, 5, 5);
+        V_AOM = @MMatrix zeros(Float64, 5, 5)
         for i in 1:size(ligands,1)
-            θ, φ  = ligands[i, :];
-            V_AOM += sigma[i]*SigmaAOM(θ, φ);
+            θ, φ = ligands[i, 1], ligands[i, 2]
+            V_AOM += sigma[i] * SigmaAOM(θ, φ)
         end
-        new(ligands, sigma, V_AOM)
+        new(ligands, sigma, SMatrix(V_AOM))
     end
 end
 

@@ -8,15 +8,14 @@ function H_AOM(Alldet::Vector{SlaterDet}, coeff::Matrix{ComplexF64}, V::Matrix{C
     # ψ_i = coeff[:,i]
     # Можно брать не все коэффициенты!!!!
     # заранее найти только значимые и юзать их -> не буду считать 0 
-    for i in axes(H,1)[begin:end]
+    @inbounds for i in axes(H,1)
+        @views coeff1 = coeff[:,i]
         for j in axes(H,1)[i:end]
-            coeff1 = coeff[:,i];
-            coeff2 = coeff[:,j];
+            @views coeff2 = coeff[:,j]
             Energ = CSF_AOM(Alldet, coeff1, coeff2, V);
             if i != j  
                 H[i,j] += Energ;
                 H[j,i] += Energ';
-                #  println("        ", i,"  ", j)
             else
                 H[i,j] +=  Energ;
             end     
