@@ -52,7 +52,7 @@ end
 
  
 
-# проверить бы еще насколько эти CSF чистые по спину и L
+# Check the purity of these CSFs with respect to spin and L
 function DetermineTerm(E::Vector{Float64}, ψ::Matrix{Float64}, Alldet::Vector{SlaterDet})
     UniqueE = unique(E);
     Terms = Vector{Term}(undef, length(UniqueE))

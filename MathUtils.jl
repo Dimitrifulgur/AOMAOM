@@ -123,23 +123,6 @@ function AOMMatrixtoStandert(V::Matrix{Float64})
 
     return(Vnew)
 end
- #=
-#        dz2      dxz     dyz     dx2-y2     dxy
-# dz2
-# dxz
-# dyz     Vnew            
-# dx2-y2
-# dxy
-##############################################
-#         z2    yz    xz   xy    x2-y2  
-# z2
-# yz     V       
-# xz             
-# xy
-# dx2y2
-
-###################################################################################################################################################
-=#
 
 # ===============================
 # From Other_SpinAlgebra.jl
@@ -175,7 +158,7 @@ function SpinMatrices(S::Real)
 end
 
 function RealtoYlm(V::Matrix{ComplexF64})
-    # R is the transormation matrix from (z2 xz yz x2-y2 xy) to (-2 -1  0  1  2)
+    # R is the transformation matrix from (z2 xz yz x2-y2 xy) to (-2 -1  0  1  2)
     R = @SMatrix [0.0        0.0            0.0       1/sqrt(2)     -im/sqrt(2);
                   0.0     1/sqrt(2)     -im/sqrt(2)     0.0             0.0    ;
                   1.0        0.0           0.0         0.0             0.0    ;
@@ -200,35 +183,4 @@ function ConfigGen(n::Int, l::Int)
     
     return [SlaterDet(i) for i in combinations(dset, n)]
 end
-
-# p is a degree in 10^(-p)
-# p = presicion
-#=function SimplifyRound(t::Basic, p::Int)
-    symbolt = Symbolics.get_variables(t);
-    tnew = Basic(0.0);
-    for i in eachindex(symbolt)
-        tnew += Basic(round(Symbolics.coeff(t, symbolt[i]), digits=p)*symbolt[i]);
-    end
-    return(tnew)
-end
-
-function Base.:(==)(a::Basic, b::Basic)
-    symbolA = Symbolics.get_variables(a);
-    symbolB = Symbolics.get_variables(b);
-    keyBool = true;
-    if size(symbolA, 1) == size(symbolB, 1)
-        for i in eachindex(symbolA)
-            keyBool = keyBool && (Symbolics.coeff(a, symbolA[i]) == Symbolics.coeff(b, symbolB[i]))
-        end
-        return(keyBool)
-    else
-        return(false)
-    end
-end
-
-function Base.:(!=)(a::Basic, b::Basic)
-    return(!(a==b))
-end
-# wigner3j(l, k, l, 0, 0, 0)
-=#
 

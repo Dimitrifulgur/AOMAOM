@@ -66,10 +66,10 @@ function main()
     F2 = 88404.7
     F4 = 55404.2
     
-    # Выбираем геометрию (octahedral, tetrahedral, etc.)
+    # Select geometry (octahedral, tetrahedral, etc.)
     ligands, sigma = get_octahedral()
     
-    # Считаем потенциал
+    # Calculate the AOM potential
     V = round.(AOM_system(ligands, sigma).V_AOM, digits = 5)
     V = AOMMatrixtoStandert(Matrix(V))
     V1 = RealtoYlm(ComplexF64.(V))
@@ -82,7 +82,7 @@ function main()
     Energ = round.(Energ, digits = 20)
     EiVec = round.(EiVec, digits = 20)
     
-    println("Кулоновские энергии (до внешних полей):")
+    println("Coulomb energies (before external fields):")
     Energ_C = real.(Energ) .- minimum(real.(Energ))
     display(round.(Energ_C, digits=2))
     
@@ -95,9 +95,9 @@ function main()
     Energ1 = real.(En) .- minimum(real.(En))
     Energ1 = round.(Energ1, digits=2)
     
-    println("Расчитанные энергии:")
+    println("Calculated energies:")
     display(Energ1)
 end
 
-# Запуск основной функции
+# Run the main function
 main()

@@ -35,8 +35,8 @@ The project has been refactored into a clean modular architecture:
    ```
 
 3. The script will output:
-   - **Кулоновские энергии**: Energy levels of the free ion $LS$-terms split strictly by interelectronic repulsion.
-   - **Расчитанные энергии**: The final energy spectrum (in $cm^{-1}$) representing the fine structure of the complex after the AOM crystal field and Spin-Orbit coupling have broken the degeneracy.
+   - **Coulomb energies**: Energy levels of the free ion $LS$-terms split strictly by interelectronic repulsion.
+   - **Calculated energies**: The final energy spectrum (in $cm^{-1}$) representing the fine structure of the complex after the AOM crystal field and Spin-Orbit coupling have broken the degeneracy.
 
 ## Dependencies
 - `LinearAlgebra`

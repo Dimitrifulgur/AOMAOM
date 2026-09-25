@@ -22,14 +22,14 @@ function TwoElectronCoulomb(spinorb11::SpinOrbital, spinorb12::SpinOrbital, spin
     end
 end
 
-# function to turn Slater determinants into standart order
+# Function to turn Slater determinants into standard order
 function SortSlaterDet(det11::Vector{SpinOrbital}, det22::Vector{SpinOrbital})
     det1 = copy(det11); det2 = copy(det22);
     accord1in2 = [x in det2 for x = det1];
     accord2in1 = [x in det1 for x = det2];
     n_match = sum([x in det1 for x = det2]);
     n_dismatch = length(accord1in2) - n_match;
-    sign_perm1 = 1; # sign if permutation
+    sign_perm1 = 1; # sign of permutation
     sign_perm2 = 1;
 
     # different spin-orbitals in beginning of the vector
@@ -77,7 +77,7 @@ end
 
 # take Coulomb integrals between two Slater integrals
 function CoulombIntegralDet(det11::Vector{SpinOrbital}, det22::Vector{SpinOrbital}, F0::Float64, F2::Float64, F4::Float64)
-    # sort determinants and take sigh of permutation
+    # sort determinants and take sign of permutation
     sortdet = SortSlaterDet(det11, det22);
     det1 = sortdet[1]; det2 = sortdet[2]; sign_temp = sortdet[3]; ndif = sortdet[4];
 
@@ -146,22 +146,6 @@ end
 # ===============================
 # From Integrals_SO.jl
 # ===============================
-#=function HTerm_SO(H::Matrix{Num}, Terms::Matrix{Term})
-    CSF_full = Terms[1].VecCSF[begin:end]
-
-    for i in eachindex(Terms)
-        if i != 1
-            append!(CSF_full, Terms[i].VecCSF[begin:end])
-        end
-    end
-
-    for i in eachindex(CSF_full)
-        for j in eachindex(CSF_full)
-            H[i, j] += OneElectronSODet(CSF_full[i], CSF_full[j])
-        end
-    end
-end
-=#
 
 function H_SO(Alldet::Vector{SlaterDet}, coeff::Matrix{ComplexF64}, H::Matrix{ComplexF64}, λ::Float64)
     N = length(Alldet)
@@ -222,10 +206,6 @@ end
 # ===============================
 # From Integrals_AOM.jl
 # ===============================
-# такое чусвто, что здесь я оченб сильно увелчсиваю время расчета
-# т.к. суммирую очень ненужные вклады в каждый элемент H[i,j]
-# можно нахуярить еще матрицу между детерминантами лдя одноэлектронных интегралов
-# чтобы каждый раз не смотреть перестановку
 function H_AOM(Alldet::Vector{SlaterDet}, coeff::Matrix{ComplexF64}, V::Matrix{ComplexF64}, H::Matrix{ComplexF64})
     N = length(Alldet)
     H_det = zeros(ComplexF64, N, N)
@@ -272,9 +252,8 @@ end
 function OneElectronAOM(spinorbital1::SpinOrbital, spinorbital2::SpinOrbital, V::Matrix{ComplexF64})
     ms1 = spinorbital1.ms; ms2 = spinorbital2.ms;
     ml1 = spinorbital1.ml; ml2 = spinorbital2.ml;
-    n = ml1 + 3; k = ml2  + 3; # ?????????
+    n = ml1 + 3; k = ml2 + 3; # Map ml from [-2, 2] to indices [1, 5]
     delta = kr(ms1, ms2);
-    # какой должен быть n,k ? V -> в базисе Y_lm
     if delta == 0.0
         return(0.0)
     else
@@ -286,10 +265,6 @@ end
 # ===============================
 # From Integrals_Zeeman.jl
 # ===============================
-# такое чусвто, что здесь я оченб сильно увелчсиваю время расчета
-# т.к. суммирую очень ненужные вклады в каждый элемент H[i,j]
-# можно нахуярить еще матрицу между детерминантами лдя одноэлектронных интегралов
-# чтобы каждый раз не смотреть перестановку
 function H_Zeeman(Alldet::Vector{SlaterDet}, coeff::Matrix{ComplexF64}, H::Matrix{ComplexF64}, B::Vector{Float64})
     N = length(Alldet)
     H_det = zeros(ComplexF64, N, N)
